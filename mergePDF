@@ -1,0 +1,32 @@
+#! python3
+'''
+Instruction: 
+    - Change the savedPath variable to the path the pdf files are saved
+    - Run code
+'''
+
+import os, PyPDF2
+
+# Declare necessary variables
+savedPath = r'C:\Users\erich\Desktop\Python\Projects\PDFMergerTest'
+writer = PyPDF2.PdfFileWriter()
+
+# Change directory
+os.chdir(savedPath)   # Directory changed to designated folder
+
+# Scrape for all the pdf files
+files = [f for f in os.listdir(savedPath) if os.path.isfile(f)]
+files = filter(lambda f: f.endswith(('.pdf','.PDF')), files)
+files = list(files)
+
+# Merge the pdf files
+for f in files:
+    reader = PyPDF2.PdfFileReader(f,'rb')
+    for p in range(reader.numPages):
+        writer.addPage(reader.getPage(p))
+
+# Save the merged file        
+mergedPDF = open(r'MergedPDF.pdf.','wb')        
+writer.write(mergedPDF)
+mergedPDF.close()
+        
